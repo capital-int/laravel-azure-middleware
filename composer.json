@@ -1,7 +1,8 @@
 {
-    "name": "rootinc/laravel-azure-middleware",
+    "name": "capital-int/laravel-azure-middleware",
     "description": "Azure Middleware Auth",
     "type": "library",
+    "homepage:" "https://github.com/rootinc/laravel-azure-middleware",
     "require": {
         "php": ">=5.6.4",
         "laravel/framework": ">=5.4.0",
