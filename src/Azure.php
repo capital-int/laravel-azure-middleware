@@ -55,8 +55,8 @@ class Azure
                 'resource' => config('azure.resource'),
             ];
 
-            if (Route::has('azure.callback')) {
-                $form_params['redirect_uri'] = route('azure.callback');
+            if (!empty(config('azure.redirect')) || Route::has('azure.callback')) {
+                $form_params['redirect_uri'] = config('azure.redirect') ?? route('azure.callback');
             }
 
             $response = $client->request('POST', $this->baseUrl . config('azure.tenant_id') . $this->route . "token", [
@@ -105,9 +105,17 @@ class Azure
      */
     public function getAzureUrl()
     {
-        $url = $this->baseUrl . config('azure.tenant_id') . $this->route2 . "authorize?response_type=code&client_id=" . config('azure.client.id') . "&domain_hint=" . urlencode(config('azure.domain_hint')) . "&scope=" . urldecode(config('azure.scope'));
+        $url = $this->baseUrl . config('azure.tenant_id') . $this->route2 . "authorize?" .
+            "response_type=code" .
+            "&client_id=" . config('azure.client.id') .
+            "&domain_hint=" . urlencode(config('azure.domain_hint')) .
+            "&scope=" . urldecode(config('azure.scope'));
 
-        return Route::has('azure.callback') ? $url . '&redirect_uri=' . urlencode(route('azure.callback')) : $url;
+        if (!empty(config('azure.redirect')) || Route::has('azure.callback')) {
+            $url .= '&redirect_uri=' . urlencode(config('azure.redirect') ?? route('azure.callback'));
+        }
+
+        return $url;
     }
 
     /**
