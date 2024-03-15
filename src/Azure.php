@@ -155,14 +155,20 @@ class Azure
         $code = $request->input('code');
 
         try {
+            $form_params = [
+                'grant_type' => 'authorization_code',
+                'client_id' => config('azure.client.id'),
+                'client_secret' => config('azure.client.secret'),
+                'code' => $code,
+                'resource' => config('azure.resource'),
+            ];
+
+            if (!empty(config('azure.redirect')) || Route::has('azure.callback')) {
+                $form_params['redirect_uri'] = config('azure.redirect') ?? route('azure.callback');
+            }
+
             $response = $client->request('POST', $this->baseUrl . config('azure.tenant_id') . $this->route . "token", [
-                'form_params' => [
-                    'grant_type' => 'authorization_code',
-                    'client_id' => config('azure.client.id'),
-                    'client_secret' => config('azure.client.secret'),
-                    'code' => $code,
-                    'resource' => config('azure.resource'),
-                ]
+                'form_params' => $form_params
             ]);
 
             $contents = json_decode($response->getBody()->getContents());
