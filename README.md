@@ -2,7 +2,7 @@
 
 ## A note to Capital developers
 
-This is a private fork of https://github.com/rootinc/laravel-azure-middleware. The middleware was last patched on 9th October 2021, however the patch was never released. In order to apply better control over the repository it has been forked for internal Capital use.
+This is a fork of https://github.com/rootinc/laravel-azure-middleware. The middleware was last patched on 9th October 2021, however the patch was never released. In order to apply better control over the repository it has been forked for our use.
 
 ## Details
 
